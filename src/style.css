@@ -89,3 +89,7 @@ hr{
     background: var(--darkBackVariant);
     border: none;
 }
+
+button{
+    cursor: pointer;
+}
