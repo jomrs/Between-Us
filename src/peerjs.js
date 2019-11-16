@@ -71,7 +71,7 @@ peer.on('call', function(call) {
         var video2 = document.querySelector('#video2');
         video2.srcObject = stream;
         video2.onloadedmetadata = function(e) {
-            video.play();
+            video2.play();
         };  
     });
   }, function(err) {
