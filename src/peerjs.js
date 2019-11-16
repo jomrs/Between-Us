@@ -69,8 +69,8 @@ peer.on('call', function(call) {
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function(remoteStream) {
         var video2 = document.querySelector('#video2');
-        video.srcObject = stream;
-        video.onloadedmetadata = function(e) {
+        video2.srcObject = stream;
+        video2.onloadedmetadata = function(e) {
             video.play();
         };  
     });
