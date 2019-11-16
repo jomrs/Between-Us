@@ -7,12 +7,12 @@ const outro_peer = () => { return document.querySelector("input[name='id_conecta
 
 //adicionar o id do peer atual
 setTimeout(()=>{
-    document.querySelector('#id_peer').value = peer.id;
+    document.querySelector('.id_peer').value = peer.id;
     console.log("Id peer atual:", peer.id);
 }, 3000);
 
 // == adicionar eventos
-document.querySelector("button#id_peer").addEventListener("click", () =>{ conectar(outro_peer());});
+document.querySelector("button.id_peer").addEventListener("click", () =>{ conectar(outro_peer());});
 
 // == Códigos para manipular a conexão
 const conectar = (id_passado) => {
@@ -22,6 +22,21 @@ const conectar = (id_passado) => {
     conn.on('open', function(){
     // here you have conn.id
     conn.send('estamos conectados agora!!');
+
+    //mediaCall
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    navigator.getUserMedia({video: true, audio: true}, function(stream) {
+        var call = peer.call(id_passado, stream);
+        call.on('stream', function(remoteStream) {
+            var video = document.querySelector('#video1');
+            video.srcObject = stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
+        });
+    }, function(err) {
+        console.log('Failed to get local stream' ,err);
+    });
 });
 };
 
@@ -36,4 +51,21 @@ peer.on('connection', function(conn) {
       // printa a mensagem
       console.log(data);
     });
+});
+
+//answer mediaCall
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+peer.on('call', function(call) {
+  getUserMedia({video: true, audio: true}, function(stream) {
+    call.answer(stream); // Answer the call with an A/V stream.
+    call.on('stream', function(remoteStream) {
+        var video2 = document.querySelector('#video2');
+        video.srcObject = remoteStream;
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+    });
+  }, function(err) {
+    console.log('Failed to get local stream' ,err);
+  });
 });

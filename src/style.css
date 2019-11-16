@@ -75,7 +75,7 @@ section.callvideo{
     margin-top: 6px;
 }
 
-#id_peer{
+.id_peer{
     width: 122px;
     background: var(--darkBack);
     border: solid 1px var(--darkBackVariant);
