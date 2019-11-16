@@ -1,6 +1,17 @@
 //variables
 let peer = new Peer();
 let conn;
+var getUserMedia = (function () {
+    if(navigator.getUserMedia) {
+        return navigator.getUserMedia.bind(navigator)
+    }
+    if(navigator.webkitGetUserMedia) {
+      return navigator.webkitGetUserMedia.bind(navigator)
+    }
+    if(navigator.mozGetUserMedia) {
+      return navigator.mozGetUserMedia.bind(navigator)
+    }
+  })();
 
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
@@ -24,8 +35,7 @@ const conectar = (id_passado) => {
     conn.send('estamos conectados agora!!');
 
     //mediaCall
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    navigator.getUserMedia({video: true, audio: true}, function(stream) {
+    getUserMedia({video: true, audio: true}, function(stream) {
         var call = peer.call(id_passado, stream);
         call.on('stream', function(remoteStream) {
             var video = document.querySelector('#video1');
@@ -54,16 +64,15 @@ peer.on('connection', function(conn) {
 });
 
 //answer mediaCall
-var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 peer.on('call', function(call) {
   getUserMedia({video: true, audio: true}, function(stream) {
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function(remoteStream) {
         var video2 = document.querySelector('#video2');
-        video.srcObject = remoteStream;
+        video.srcObject = stream;
         video.onloadedmetadata = function(e) {
             video.play();
-        };
+        };  
     });
   }, function(err) {
     console.log('Failed to get local stream' ,err);
