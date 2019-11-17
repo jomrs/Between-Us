@@ -1,5 +1,6 @@
+
 //variables
-let peer = new Peer();
+let peer = new Peer({host: 'localhost', port: 8000, path: '/api'});
 let conn;
 var getUserMedia = (function () {
     if(navigator.getUserMedia) {

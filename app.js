@@ -6,18 +6,17 @@ var routes = require('./routes');
 // ======= using routes file
 
 app.use('/', routes);
-
 // =======
 
-var server = app.listen(9000, ()=>{
+const server = app.listen(8000, ()=>{
     console.log("servidor rodando...");
 });
  
-var options = { //debug is on
+const options = { //debug is on
     debug: true
 }
  
-var peerserver = ExpressPeerServer(server, options);
+const peerserver = ExpressPeerServer(server, options);
 //console.log("servidor peer:", peerserver); 
 
 app.use('/api', peerserver);
