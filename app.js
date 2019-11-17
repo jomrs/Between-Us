@@ -9,7 +9,7 @@ const routes = require('./routes');
 app.use('/', routes);
 // =======
 
-const server = app.listen(8000, ()=>{
+const server = app.listen(process.env.PORT || 9000, ()=>{
     console.log("servidor rodando...");
 });
  
