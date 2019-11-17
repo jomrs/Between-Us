@@ -1,7 +1,8 @@
-var express = require('express');
-var app = express();
-var ExpressPeerServer = require('peer').ExpressPeerServer;
-var routes = require('./routes');
+const express = require('express');
+const app = express();
+const ExpressPeerServer = require('peer').ExpressPeerServer;
+const routes = require('./routes');
+
 
 // ======= using routes file
 
