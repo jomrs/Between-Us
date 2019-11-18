@@ -1,6 +1,6 @@
 
 //variables
-let peer = new Peer({host: 'localhost', port: 8000, path: '/api'});
+let peer = new Peer();
 let conn;
 let modal_conect = document.querySelector("section.connect");
 let bttn_chamada = document.querySelector("button.id_peer");
