@@ -1,15 +1,14 @@
-const express = require('express');
-const app = express();
-const ExpressPeerServer = require('peer').ExpressPeerServer;
-const routes = require('./routes');
-
+var express = require('express'); 
+var app = express();
+var ExpressPeerServer = require('peer').ExpressPeerServer;
+var routes = require('./routes');
 
 // ======= using routes file
 
 app.use('/', routes);
 // =======
 
-const server = app.listen(process.env.PORT || 9000, ()=>{
+const server = app.listen(process.env.PORT || 8000, ()=>{
     console.log("servidor rodando...");
 });
  

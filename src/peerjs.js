@@ -1,7 +1,11 @@
 
 //variables
-let peer = new Peer();
+let peer = new Peer({host: 'localhost', port: 8000, path: '/api'});
 let conn;
+let modal_conect = document.querySelector("section.connect");
+let bttn_chamada = document.querySelector("button.id_peer");
+let bttn_phone = document.querySelector("#imgcall");
+
 var getUserMedia = (function () {
     if(navigator.getUserMedia) {
         return navigator.getUserMedia.bind(navigator)
@@ -24,7 +28,8 @@ setTimeout(()=>{
 }, 3000);
 
 // == adicionar eventos
-document.querySelector("button.id_peer").addEventListener("click", () =>{ conectar(outro_peer());});
+bttn_chamada.addEventListener("click", () =>{ conectar(outro_peer()); ct_modal("none");});
+bttn_phone.addEventListener("click", () =>{ct_modal("");});
 
 // == Códigos para manipular a conexão
 const conectar = (id_passado) => {
@@ -79,3 +84,9 @@ peer.on('call', function(call) {
     console.log('Failed to get local stream' ,err);
   });
 });
+
+//when page loads here is when moddal will appears!
+const ct_modal = (opt) => { modal_conect.style["display"] = opt; };
+
+window.onload = () => { ct_modal(""); };
+
