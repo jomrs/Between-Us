@@ -18,6 +18,19 @@ body{
     text-align: center;
 }
 
+header.top {
+    display: inline-flex;
+    color:var(--text-Light);
+    width:100%;
+    background: var(--darkBack);
+}
+
+h1 {
+    flex-grow: 5;
+    text-align: center;
+    margin: 0 auto;
+}
+
 footer{
     bottom: 0;
     left: 0;
@@ -37,26 +50,32 @@ section.peer{
     justify-content: space-between;
     flex-wrap: wrap;
     flex-flow: row;
+    z-index: -1;
+    width: 100%;
 }
 
 section.connect{
-    float:left;
     background: var(--darkElements);
-    margin-left: 13px;
-    flex-grow: 1;
-    height: 400px;
+    margin: 0 auto;
+    width: 300px;
+    height: 200px;
+    z-index: 2;
+    position: fixed;
+    text-align: center;
     border-radius: 3px;
     border-top: solid 1px var(--darkBackVariant);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 section.callvideo{
     flex-grow: 4;
+    margin-top: 3px;
     margin-left: 13px;
     margin-right:13px;   
     background: var(--darkElements);
-    height: 420px;
     border-radius: 3px;
-    border-top: solid 1px var(--darkBackVariant);
 }
 
 .videoareas {
@@ -92,4 +111,15 @@ hr{
 
 button{
     cursor: pointer;
+}
+
+#imgcall {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+#first-video {
+    flex-grow: 5;
 }
