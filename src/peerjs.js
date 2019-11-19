@@ -6,17 +6,7 @@ let modal_conect = document.querySelector("section.connect");
 let bttn_chamada = document.querySelector("button.id_peer");
 let bttn_phone = document.querySelector("#imgcall");
 
-function getUserMedia() {
-  if(navigator.getUserMedia) {
-      return navigator.getUserMedia.bind(navigator)
-  }
-  if(navigator.webkitGetUserMedia) {
-    return navigator.webkitGetUserMedia.bind(navigator)
-  }
-  if(navigator.mozGetUserMedia) {
-    return navigator.mozGetUserMedia.bind(navigator)
-  }
-};
+
 
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
@@ -42,7 +32,7 @@ const conectar = (id_passado) => {
       conn.send('estamos conectados agora!!');
 
       //mediaCall
-      getUserMedia({video: true, audio: true}, function(stream) {
+      navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
           var call = peer.call(id_passado, stream);
           call.on('stream', function(remoteStream) {
               var video = document.querySelector('#video1');
@@ -72,7 +62,7 @@ peer.on('connection', function(conn) {
 
 //answer mediaCall
 peer.on('call', function(call) {
-  getUserMedia({video: true, audio: true}, function(stream) {
+  navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
     
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function(remoteStream) {
