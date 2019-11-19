@@ -42,7 +42,7 @@ const conectar = (id_passado) => {
       conn.send('estamos conectados agora!!');
 
       //mediaCall
-      getUserMedia({video: true, audio: true}, function(stream) {
+      navigator.getUserMedia({video: true, audio: true}, function(stream) {
           var call = peer.call(id_passado, stream);
           call.on('stream', function(remoteStream) {
               var video = document.querySelector('#video1');
@@ -72,7 +72,7 @@ peer.on('connection', function(conn) {
 
 //answer mediaCall
 peer.on('call', function(call) {
-  getUserMedia({video: true, audio: true}, function(stream) {
+  navigator.getUserMedia({video: true, audio: true}, function(stream) {
     
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function(remoteStream) {
