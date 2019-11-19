@@ -8,7 +8,7 @@ var routes = require('./routes');
 app.use('/', express.static(__dirname, { dotfiles: 'allow' } ), routes);
 // =======
 
-const server = app.listen(process.env.PORT || 8000, ()=>{
+const server = app.listen(process.env.PORT || 80, ()=>{
     console.log("servidor rodando...");
 });
  
