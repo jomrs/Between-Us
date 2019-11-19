@@ -7,7 +7,6 @@ let bttn_chamada = document.querySelector("button.id_peer");
 let bttn_phone = document.querySelector("#imgcall");
 
 
-
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
 
