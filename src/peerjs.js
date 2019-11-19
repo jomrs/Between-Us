@@ -32,18 +32,19 @@ const conectar = (id_passado) => {
       conn.send('estamos conectados agora!!');
 
       //mediaCall
-      navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
-          var call = peer.call(id_passado, stream);
-          call.on('stream', function(remoteStream) {
-              var video = document.querySelector('#video1');
-              video.srcObject = stream;
-              video.onloadedmetadata = function(e) {
-                  video.play();
-              };
-          });
-      }, function(err) {
-          console.log('Failed to get local stream' ,err);
-      });
+      // Prefer camera resolution nearest to 1280x720.
+      var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
+
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        var call = peer.call(id_passado, mediaStream);
+        var video = document.querySelector('#video1');
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+        };
+      }).catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.v
+
     });
 };
 
@@ -62,16 +63,18 @@ peer.on('connection', function(conn) {
 
 //answer mediaCall
 peer.on('call', function(call) {
-  navigator.mediaDevices.getUserMedia({video: true, audio: true}, function(stream) {
+    var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function(mediaStream) {
     
-    call.answer(stream); // Answer the call with an A/V stream.
-    call.on('stream', function(remoteStream) {
+      call.answer(mediaStream); // Answer the call with an A/V stream.
+      call.on('stream', function(remoteStream) {
         var video2 = document.querySelector('#video2');
-        video2.srcObject = stream;
+        video2.srcObject = mediaStream;
         video2.onloadedmetadata = function(e) {
-            video2.play();
+          video2.play();
         };  
-    });
+      });
   }, function(err) {
     console.log('Failed to get local stream' ,err);
   });
