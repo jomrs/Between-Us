@@ -15,5 +15,11 @@ router.get('/src/peerjs.js', (req, res)=>{
     res.sendFile(path.join(__dirname+"/src/peerjs.js"));
 });
 
+router.get('/src/api/peerjs.js', (req, res)=>{
+    res.sendFile(path.join(__dirname+"/src/api/peerjs.js"));
+});
+
+
+
 
 module.exports = router;
