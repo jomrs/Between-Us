@@ -6,7 +6,7 @@ let modal_conect = document.querySelector("section.connect");
 let bttn_chamada = document.querySelector("button.id_peer");
 let bttn_phone = document.querySelector("#imgcall");
 
-var getUserMedia = (function () {
+function getUserMedia() {
   if(navigator.getUserMedia) {
       return navigator.getUserMedia.bind(navigator)
   }
@@ -16,7 +16,7 @@ var getUserMedia = (function () {
   if(navigator.mozGetUserMedia) {
     return navigator.mozGetUserMedia.bind(navigator)
   }
-})();
+};
 
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
