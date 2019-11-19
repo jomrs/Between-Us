@@ -24,6 +24,7 @@ bttn_phone.addEventListener("click", () =>{ct_modal("");});
 const conectar = (id_passado) => {
     console.log("conectando ao id:", id_passado);
     conn = peer.connect(id_passado);
+    console.log('Conexão:',conn)
     // on open will be launch when you successfully connect to PeerServer
 
     conn.on('open', function(){
