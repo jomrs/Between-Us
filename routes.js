@@ -19,9 +19,6 @@ router.get('/src/api/peerjs.js', (req, res)=>{
     res.sendFile(path.join(__dirname+"/src/api/peerjs.js"));
 });
 
-router.get('/.well-known/acme-challenge/wQDwPg-xA37ttVMKjnsWKtWNf61MiHynJELZ5INW1jw.2fak2FD5ytbmXsSxqE0ml601hIvjrhjw6TqW3abTomE', (req, res)=>{
-    res.sendFile(path.join(__dirname+"/.well-known/acme-challenge/wQDwPg-xA37ttVMKjnsWKtWNf61MiHynJELZ5INW1jw.2fak2FD5ytbmXsSxqE0ml601hIvjrhjw6TqW3abTomE"));
-});
 
 
 module.exports = router;
