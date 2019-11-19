@@ -9,7 +9,6 @@ let bttn_phone = document.querySelector("#imgcall");
 
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
-var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 
 //adicionar o id do peer atual
@@ -35,18 +34,18 @@ const conectar = (id_passado) => {
 
       //mediaCall
       // Prefer camera resolution nearest to 1280x720.
-      var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
+      var constraints = { audio: true, video: true }; 
 
-      getUserMedia(constraints)
-      .then(function(mediaStream) {
-        var call = peer.call(id_passado, mediaStream);
-        var video = document.querySelector('#video1');
-        video.srcObject = mediaStream;
-        video.onloadedmetadata = function(e) {
-          video.play();
-        };
-      }).catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.v
-
+      navigator.mediaDevices.getUserMedia(constraints).then(
+        function success(stream) {
+          var call = peer.call(id_passado, stream);
+          var video = document.querySelector('#video1');
+          video.srcObject = stream;
+          video.onloadedmetadata = function(e) {
+            video.play();
+          };
+        }
+      ).catch(function(err) { console.log(err.name + ": " + err.message); }); //caso haja erro
     });
 };
 
@@ -65,21 +64,21 @@ peer.on('connection', function(conn) {
 
 //answer mediaCall
 peer.on('call', function(call) {
-    var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
+    var constraints = { audio: true, video: true }; 
 
-    getUserMedia(constraints).then(function(mediaStream) {
-    
-      call.answer(mediaStream); // Answer the call with an A/V stream.
-      call.on('stream', function(remoteStream) {
-        var video2 = document.querySelector('#video2');
-        video2.srcObject = mediaStream;
-        video2.onloadedmetadata = function(e) {
-          video2.play();
-        };  
-      });
-  }, function(err) {
-    console.log('Failed to get local stream' ,err);
-  });
+    navigator.mediaDevices.getUserMedia(constraints).then(
+      
+      function success(stream) {
+        call.answer(stream); // Answer the call with an A/V stream.
+        call.on('stream', function(stream) {
+          var video2 = document.querySelector('#video2');
+          video2.srcObject = stream;
+          video2.onloadedmetadata = function(e) {
+            video2.play();
+          };  
+        });
+      }
+    ).catch(function(err) { console.log(err.name + ": " + err.message); }); //caso haja erro
 });
 
 //when page loads here is when moddal will appears!
