@@ -9,6 +9,8 @@ let bttn_phone = document.querySelector("#imgcall");
 
 //pegar o campo dos ids
 const outro_peer = () => { return document.querySelector("input[name='id_conecta']").value; };
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
 
 //adicionar o id do peer atual
 setTimeout(()=>{
@@ -35,7 +37,7 @@ const conectar = (id_passado) => {
       // Prefer camera resolution nearest to 1280x720.
       var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
 
-      navigator.mediaDevices.getUserMedia(constraints)
+      getUserMedia(constraints)
       .then(function(mediaStream) {
         var call = peer.call(id_passado, mediaStream);
         var video = document.querySelector('#video1');
@@ -65,7 +67,7 @@ peer.on('connection', function(conn) {
 peer.on('call', function(call) {
     var constraints = { audio: true, video: { width: 1280, height: 720 } }; 
 
-    navigator.mediaDevices.getUserMedia(constraints).then(function(mediaStream) {
+    getUserMedia(constraints).then(function(mediaStream) {
     
       call.answer(mediaStream); // Answer the call with an A/V stream.
       call.on('stream', function(remoteStream) {
