@@ -70,7 +70,7 @@ peer.on('connection', function (conn) {
 });
 
 //responder chamada de video
-var getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
+var getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
 peer.on('call', function (call) {
   getUserMedia({ video: true, audio: true }, function (stream) {
     call.answer(stream); // Answer the call with an A/V stream.
