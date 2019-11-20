@@ -12,74 +12,83 @@ const outro_peer = () => { return document.querySelector("input[name='id_conecta
 
 
 //adicionar o id do peer atual
-setTimeout(()=>{
-    document.querySelector('.id_peer').value = peer.id;
-    console.log("Id peer atual:", peer.id);
+setTimeout(() => {
+  document.querySelector('.id_peer').value = peer.id;
+  console.log("Id peer atual:", peer.id);
 }, 3000);
 
 // == adicionar eventos
-bttn_chamada.addEventListener("click", () =>{ conectar(outro_peer()); ct_modal("none");});
-bttn_phone.addEventListener("click", () =>{ct_modal("");});
+bttn_chamada.addEventListener("click", () => { conectar(outro_peer()); ct_modal("none"); });
+bttn_phone.addEventListener("click", () => { ct_modal(""); });
 
 // == Códigos para manipular a conexão
 const conectar = (id_passado) => {
-    console.log("conectando ao id:", id_passado);
-    conn = peer.connect(id_passado);
-    console.log('Conexão:',conn)
-    // on open will be launch when you successfully connect to PeerServer
+  console.log("conectando ao id:", id_passado);
+  conn = peer.connect(id_passado);
+  // on open will be launch when you successfully connect to PeerServer
 
-    conn.on('open', function(){
-      // here you have conn.id
-      conn.send('estamos conectados agora!!');
+  conn.on('open', function () {
+    // here you have conn.id
+    conn.send('estamos conectados agora!');
+    call(id_passado); //chama a função pra ligar
+    
 
-      //mediaCall
-      // Prefer camera resolution nearest to 1280x720.
-      var constraints = { audio: true, video: true }; 
-
-      navigator.mediaDevices.getUserMedia(constraints).then(
-        function success(stream) {
-          var call = peer.call(id_passado, stream);
-          var video = document.querySelector('#video1');
-          video.srcObject = stream;
-          video.onloadedmetadata = function(e) {
-            video.play();
-          };
-        }
-      ).catch(function(err) { console.log(err.name + ": " + err.message); }); //caso haja erro
-    });
+  });
 };
+
+
+//chamada de video
+function call(id_passado){
+  
+  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+  getUserMedia({ video: true, audio: true }, function (stream) {
+    var call = peer.call(id_passado, stream);
+    call.on('stream', function (remoteStream) {
+      // Show stream in some video/canvas element.
+      var video = document.querySelector('#video1');
+      video.srcObject = remoteStream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      };
+    });
+  }, function (err) {
+    console.log('Failed to get local stream', err);
+  });
+}
 
 //mandar mensagens
 const mandar_msg = (texto) => {
-    conn.send(texto);
+  conn.send(texto);
 }
 
 // itera para o peer continuar recebendo!
-peer.on('connection', function(conn) {
-    conn.on('data', function(data){
-      // printa a mensagem
-      console.log(data);
+peer.on('connection', function (conn) {
+  conn.on('data', function (data) {
+    // printa a mensagem
+    console.log(data);
+  });
+});
+
+//responder chamada de video
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+peer.on('call', function (call) {
+  getUserMedia({ video: true, audio: true }, function (stream) {
+    call.answer(stream); // Answer the call with an A/V stream.
+    call.on('stream', function (remoteStream) {
+      // Show stream in some video/canvas element.
+      var video = document.querySelector('#video2');
+      video.srcObject = remoteStream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      };
+
     });
+  }, function (err) {
+    console.log('Failed to get local stream', err);
+  });
 });
 
-//answer mediaCall
-peer.on('call', function(call) {
-    var constraints = { audio: true, video: true }; 
 
-    navigator.mediaDevices.getUserMedia(constraints).then(
-      
-      function success(stream) {
-        call.answer(stream); // Answer the call with an A/V stream.
-        call.on('stream', function(stream) {
-          var video2 = document.querySelector('#video2');
-          video2.srcObject = stream;
-          video2.onloadedmetadata = function(e) {
-            video2.play();
-          };  
-        });
-      }
-    ).catch(function(err) { console.log(err.name + ": " + err.message); }); //caso haja erro
-});
 
 //when page loads here is when moddal will appears!
 const ct_modal = (opt) => { modal_conect.style["display"] = opt; };
