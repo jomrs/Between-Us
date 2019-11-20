@@ -40,8 +40,8 @@ const conectar = (id_passado) => {
 //chamada de video
 function call(id_passado){
   
-  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-  getUserMedia({ video: true, audio: true }, function (stream) {
+  navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
+  navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     var call = peer.call(id_passado, stream);
     call.on('stream', function (remoteStream) {
       // Show stream in some video/canvas element.
@@ -70,16 +70,16 @@ peer.on('connection', function (conn) {
 });
 
 //responder chamada de video
-var getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
 peer.on('call', function (call) {
-  getUserMedia({ video: true, audio: true }, function (stream) {
+  navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function (remoteStream) {
       // Show stream in some video/canvas element.
-      var video = document.querySelector('#video2');
-      video.srcObject = remoteStream;
-      video.onloadedmetadata = function (e) {
-        video.play();
+      var video2 = document.querySelector('#video2');
+      video2.srcObject = stream;
+      video2.onloadedmetadata = function (e) {
+        video2.play();
       };
 
     });
