@@ -5,7 +5,7 @@ var routes = require('./routes');
 
 // ======= using routes file
 
-app.use('/', routes);
+app.use('/', express.static(__dirname, { dotfiles: 'allow' } ), routes);
 // =======
 
 const server = app.listen(process.env.PORT || 8000, ()=>{
