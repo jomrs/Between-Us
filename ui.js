@@ -1,9 +1,21 @@
+let peer = new Peer();
 
-// join channel modal
-$( "#join-channel" ).click(function( event ) {
-  var agoraAppId = $('#form-appid').val();
-  var channelName = $('#form-channel').val();
-  initClientAndJoinChannel(agoraAppId, channelName);
+setTimeout(() => {
+  document.getElementById("idPeer").innerHTML ="Seu id: " + peer.id;
+  console.log("Id peer atual:", peer.id);
+}, 3000);	
+
+
+// conectar modal, códigos para manipular a conexão
+$( "#connect" ).click(function( event ) {
+  var idReceptor = $('#form-appid').val();
+  console.log("conectando ao id:", idReceptor);
+  conn = peer.connect(idReceptor);
+  conn.on('open', function () {
+    // here you have conn.id
+    conn.send('estamos conectados agora!');
+    call(idReceptor); //chama a função pra ligar
+  });
   $("#modalForm").modal("hide");
 });
 
@@ -12,7 +24,6 @@ function enableUiControls(localStream) {
 
   $("#mic-btn").prop("disabled", false);
   $("#video-btn").prop("disabled", false);
-  $("#screen-share-btn").prop("disabled", false);
   $("#exit-btn").prop("disabled", false);
 
   $("#mic-btn").click(function(){
@@ -90,14 +101,14 @@ function toggleVisibility(elementID, visible) {
   }
 }
 
-function toggleMic(localStream) {
+function toggleMic(stream) {
   toggleBtn($("#mic-btn")); // toggle button colors
   $("#mic-icon").toggleClass('fa-microphone').toggleClass('fa-microphone-slash'); // toggle the mic icon
   if ($("#mic-icon").hasClass('fa-microphone')) {
-    localStream.unmuteAudio(); // enable the local mic
+    stream.getAudioTracks()[0].enabled = true; // enable the local mic
     toggleVisibility("#mute-overlay", false); // hide the muted mic icon
   } else {
-    localStream.muteAudio(); // mute the local mic
+    stream.getAudioTracks()[0].enabled = false; // mute the local mic
     toggleVisibility("#mute-overlay", true); // show the muted mic icon
   }
 }
