@@ -2,6 +2,9 @@
  * JS Interface for PeerJs brabos ulbra
  */
 
+function isHidden(el) {
+  return (el.offsetParent === null)
+}
 
 //chamada de video
 function chamar(idReceptor){
@@ -44,20 +47,16 @@ peer.on('call', function (call) {
   
   navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     call.answer(stream); // Answer the call with an A/V stream.
-    call.on('stream', function (stream) {
+    call.on('stream', function (remoteStream) {
   
         var video2 = document.querySelector('video#full-screen-video');
         
-        if (document.getElementById('modalForm').class == 'show'){
-          chamar(call.peer);
-        }
-        video2.srcObject = stream;
+        video2.srcObject = remoteStream;
         video2.onloadedmetadata = function (e) {
           video2.play();
         };
     });
     
-
   }, function (err) {
     console.log('Failed to get local stream', err);
   });
