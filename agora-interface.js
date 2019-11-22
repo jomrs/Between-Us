@@ -4,7 +4,7 @@
 
 
 //chamada de video
-function call(idReceptor){
+function chamar(idReceptor){
   
   navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
   navigator.getUserMedia({ video: true, audio: true }, function (stream) {
@@ -12,20 +12,7 @@ function call(idReceptor){
     var call = peer.call(idReceptor, stream);
     call.on('stream', function (stream) {
 
-      var streamId = stream.id;
-      // append the remote stream template to #remote-streams
-      $('#remote-streams').append(
-        $('<div/>', {'id': streamId + '_container',  'class': 'remote-stream-container col'}).append(
-          $('<div/>', {'id': streamId + '_mute', 'class': 'mute-overlay'}).append(
-              $('<i/>', {'class': 'fas fa-microphone-slash'})
-          ),
-          $('<div/>', {'id': streamId + '_no-video', 'class': 'no-video-overlay text-center'}).append(
-            $('<i/>', {'class': 'fas fa-user'})
-          ),
-          $('<div/>', {'id': 'agora_remote_', 'class': 'remote-video'})
-        )
-      );
-      var video = document.getElementById('agora_remote_');
+      var video = document.querySelector('video#local-video');
       video.srcObject = stream;
       video.onloadedmetadata = function (e) {
         video.play();
@@ -54,17 +41,23 @@ peer.on('connection', function (conn) {
 //responder chamada de video
 navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
 peer.on('call', function (call) {
+  
   navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     call.answer(stream); // Answer the call with an A/V stream.
     call.on('stream', function (stream) {
-      // Show stream in some video/canvas element.
-      var video2 = document.querySelector('#video2');
-      video2.srcObject = stream;
-      video2.onloadedmetadata = function (e) {
-        video2.play();
-      };
-
+  
+        var video2 = document.querySelector('video#full-screen-video');
+        
+        if (document.getElementById('modalForm').class == 'show'){
+          chamar(call.peer);
+        }
+        video2.srcObject = stream;
+        video2.onloadedmetadata = function (e) {
+          video2.play();
+        };
     });
+    
+
   }, function (err) {
     console.log('Failed to get local stream', err);
   });

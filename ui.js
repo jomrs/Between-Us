@@ -14,7 +14,7 @@ $( "#connect" ).click(function( event ) {
   conn.on('open', function () {
     // here you have conn.id
     conn.send('estamos conectados agora!');
-    call(idReceptor); //chama a função pra ligar
+    chamar(idReceptor); //chama a função pra ligar
   });
   $("#modalForm").modal("hide");
 });
