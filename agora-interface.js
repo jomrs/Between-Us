@@ -12,17 +12,8 @@ function chamar(idReceptor){
   navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
   navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     
-    var call = peer.call(idReceptor, stream);
-    call.on('stream', function (stream) {
-
-      var video = document.querySelector('video#local-video');
-      video.srcObject = stream;
-      video.onloadedmetadata = function (e) {
-        video.play();
-      };
-      
-    });
-
+  peer.call(idReceptor, stream);
+    
   }, function (err) {
     console.log('Failed to get local stream', err);
   });
@@ -47,6 +38,13 @@ peer.on('call', function (call) {
   
   navigator.getUserMedia({ video: true, audio: true }, function (stream) {
     call.answer(stream); // Answer the call with an A/V stream.
+
+    var video = document.querySelector('video#local-video');
+      video.srcObject = stream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      };
+
     call.on('stream', function (remoteStream) {
   
         var video2 = document.querySelector('video#full-screen-video');
