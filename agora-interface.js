@@ -41,10 +41,10 @@ peer.on('connection', function (conn) {
         toggleVideoGlobal(conStream,false);
       }
       else if (data == 'audio true'){
-        toggleMicGlobal(myStream,true)
+        toggleMicGlobal(conStream,true)
       }
-      else{
-        toggleMicGlobal(myStream,false);
+      else if (data == 'audio false'){
+        toggleMicGlobal(conStream,false);
       }
     };
   });
