@@ -18,8 +18,8 @@
 #local-stream-container { 
   position: relative; 
   display: inline-block;
-  width: 150px; 
-  height: 150px;
+  width: 350px; 
+  height: 350px;
   padding: 0.5em; 
 }
 

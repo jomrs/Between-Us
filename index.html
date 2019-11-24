@@ -33,7 +33,7 @@
 				<div id="lower-video-bar" class="row fixed-bottom mb-1">
 					<div id="remote-streams-container" class="container col-9 ml-1">
 						<div id="remote-streams" class="row">
-							<!-- insert remote streams dynamically -->
+							<!-- inserir video de novos usuários -->
 						</div>
 					</div>
 					<div id="local-stream-container" class="col p-0">
@@ -43,7 +43,10 @@
 						<div id="no-local-video" class="col text-center">
 							<i id="user-icon" class="fas fa-user"></i>
 						</div>
-						<div id="local-video" class="col p-0"><video id="local-video"></video></div>
+						<div id="local-video" class="col p-0"><video id="local-video" style="
+							right: 30px;
+							bottom: 20px;
+						"></video></div>
 					</div>
 				</div>
 			</div>
@@ -74,8 +77,8 @@
 	<script src="./api/peerjs.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://raw.githubusercontent.com/Temasys/AdapterJS/master/publish/adapter.debug.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
@@ -88,14 +91,11 @@
 			$("#modalForm").modal("show");
 		});
 	</script>
-	<script>
-		$( function() {
-			$( "#local-stream-container" ).draggable();	
-		});
-  	</script>
-	<script src="ui.js"></script>
-	<script src="DragDropTouch.js"></script>
+
+	<script>$('#local-stream-container').draggable();</script>
+	
 	<script src="agora-interface.js"></script>
+	<script src="ui.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css"/>
 	
 </html>
