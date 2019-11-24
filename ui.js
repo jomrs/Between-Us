@@ -1,8 +1,7 @@
-
-
 setTimeout(() => {
   document.getElementById("idPeer").innerHTML ="Seu id: " + peer.id;
   console.log("Id peer atual:", peer.id);
+  pegaStream();
 }, 3000);	
 
 

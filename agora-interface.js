@@ -7,18 +7,21 @@ let conStream;
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
 
+function pegaStream(){
+  navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+    myStream = stream;
+  });
+}
+
 function isHidden(el) {
   return (el.offsetParent === null)
 }
 
 //chamada de video
 function chamar(idReceptor){
-  
-  navigator.getUserMedia({ video: true, audio: true }, function (stream) {
-    peer.call(idReceptor, stream);
-  }, function (err) {
-    console.log('Failed to get local stream', err);
-  });
+
+  peer.call(idReceptor, myStream);
+
 };
 
 //mandar mensagens
@@ -76,11 +79,11 @@ peer.on('call', function (call) {
 
 
 function responder(call){
-  navigator.getUserMedia({ video: true, audio: true }, function (stream) {
-    call.answer(stream); // Responder a chamada com um stream de audio e video.
+  
+    call.answer(myStream); // Responder a chamada com um stream de audio e video.
     
     var video = document.querySelector('video#local-video');
-    video.srcObject = stream;
+    video.srcObject = myStream;
 
     video.onloadedmetadata = function (e) {
       video.play();
@@ -90,7 +93,6 @@ function responder(call){
       
         var video2 = document.querySelector('video#full-screen-video');
 
-        myStream = stream;
         conStream = remoteStream;
 
         video2.srcObject = remoteStream;
@@ -100,7 +102,4 @@ function responder(call){
         enableUiControls();
     });
     
-  }, function (err) {
-    console.log('Failed to get local stream', err);
-  });
 }
