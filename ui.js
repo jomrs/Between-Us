@@ -9,15 +9,19 @@ setTimeout(() => {
 // conectar modal, códigos para manipular a conexão
 $( "#connect" ).click(function( event ) {
   var idReceptor = $('#form-appid').val();
+  conectar(idReceptor);
+  
+});
+
+function conectar(idReceptor){
   console.log("conectando ao id:", idReceptor);
   conn = peer.connect(idReceptor);
   conn.on('open', function () {
-
     chamar(idReceptor); //chama a função pra ligar
   });
-  $("#modalForm").modal("hide");
   
-});
+  $("#modalForm").modal("hide");
+}
 
 // UI buttons
 function enableUiControls() {
@@ -44,9 +48,11 @@ $("#video-btn").click(function(){
 
 });
 
-$("#exit-btn").click(function(){ // botao de desligar chamada
-  console.log("so sad to see you leave the channel");
-  desligarChamada(); 
+$("#exit-btn").click(function(){ // desonectar e forçar a desconexão com o peer no qual está conectado
+
+  enviaDados("desconectar");
+  peer.disconnect();
+  location.reload();
 });
 
 function toggleBtn(btn){
@@ -80,4 +86,9 @@ function toggleVideoGlobal(st,cond) {
 
   st.getVideoTracks()[0].enabled = cond; // enable/disable the global video
   
+}
+
+function disconnect(){
+  peer.disconnect();
+  location.reload();
 }
