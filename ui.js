@@ -12,8 +12,7 @@ $( "#connect" ).click(function( event ) {
   console.log("conectando ao id:", idReceptor);
   conn = peer.connect(idReceptor);
   conn.on('open', function () {
-    // here you have conn.id
-    conn.send('estamos conectados agora!');
+
     chamar(idReceptor); //chama a função pra ligar
   });
   $("#modalForm").modal("hide");
@@ -32,15 +31,16 @@ $("#mic-btn").click(function(){
 
   toggleBtn($("#mic-btn")); // altera a cor do botao microfone
   $("#mic-icon").toggleClass('fa-microphone').toggleClass('fa-microphone-slash'); // altera o icone para cortado
-  toggleMic(s);
-
+  enviaDados('audio '+$("#mic-icon").hasClass('fa-microphone'));
+  
 });
 
 $("#video-btn").click(function(){
 
   toggleBtn($("#video-btn")); // altera a cor do botao video
   $("#video-icon").toggleClass('fa-video').toggleClass('fa-video-slash'); // altera o icone para cortado
-  toggleVideo(s);
+  enviaDados('video '+$("#video-icon").hasClass('fa-video'));
+  toggleVideoLocal(myStream);
 
 });
 
@@ -48,8 +48,6 @@ $("#exit-btn").click(function(){ // botao de desligar chamada
   console.log("so sad to see you leave the channel");
   desligarChamada(); 
 });
-
-
 
 function toggleBtn(btn){
   btn.toggleClass('btn-dark').toggleClass('btn-danger');
@@ -63,24 +61,23 @@ function toggleVisibility(elementID, visible) {
   }
 }
 
-function toggleMic(st) {
-  
-  if ($("#mic-icon").hasClass('fa-microphone')) {
-    st.getAudioTracks()[0].enabled = true; // enable the local mic
-    toggleVisibility("#mute-overlay", false); // hide the muted mic icon
-  } else {
-    st.getAudioTracks()[0].enabled = false; // mute the local mic
-    toggleVisibility("#mute-overlay", true); // show the muted mic icon
-  }
-}
-
-function toggleVideo(st) {
+function toggleVideoLocal(st) {
   
   if ($("#video-icon").hasClass('fa-video')) {
     st.getVideoTracks()[0].enabled = true;  // enable the local video
-    toggleVisibility("#no-local-video", false); // hide the user icon when video is enabled
   } else {
     st.getVideoTracks()[0].enabled = false; // disable the local video
-    toggleVisibility("#no-local-video", true); // show the user icon when video is disabled
   }
+}
+
+function toggleMicGlobal(st,cond) {
+  
+  st.getAudioTracks()[0].enabled = cond; // enable/disable the global mic
+  
+}
+
+function toggleVideoGlobal(st,cond) {
+
+  st.getVideoTracks()[0].enabled = cond; // enable/disable the global video
+  
 }

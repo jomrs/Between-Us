@@ -2,7 +2,9 @@
  * JS Interface for PeerJs brabos ulbra
  */
 let peer = new Peer();
-let s;
+let myStream;
+let conStream;
+
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
 
@@ -23,15 +25,28 @@ function chamar(idReceptor){
 };
 
 //mandar mensagens
-const mandar_msg = (texto) => {
-  conn.send(texto);
+const enviaDados = (dados) => {
+  conn.send(dados);
 }
 
 // itera para o peer continuar recebendo!
 peer.on('connection', function (conn) {
   conn.on('data', function (data) {
-    // printa a mensagem
     console.log(data);
+    if(data != null){
+      if (data == 'video true' ){
+        toggleVideoGlobal(conStream,true);
+      }
+      else if (data == 'video false'){
+        toggleVideoGlobal(conStream,false);
+      }
+      else if (data == 'audio true'){
+        toggleMicGlobal(myStream,true)
+      }
+      else{
+        toggleMicGlobal(myStream,false);
+      }
+    };
   });
 });
 
@@ -43,7 +58,7 @@ peer.on('call', function (call) {
 
     var video = document.querySelector('video#local-video');
       video.srcObject = stream;
-      s = stream;
+
       video.onloadedmetadata = function (e) {
         video.play();
       };
@@ -51,7 +66,10 @@ peer.on('call', function (call) {
     call.on('stream', function (remoteStream) {
   
         var video2 = document.querySelector('video#full-screen-video');
-        
+
+        myStream = stream;
+        conStream = remoteStream;
+
         video2.srcObject = remoteStream;
         video2.onloadedmetadata = function (e) {
           video2.play();
